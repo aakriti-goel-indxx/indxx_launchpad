@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Indxx Launchpad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F6FB;--surface:#FFFFFF;--ink:#0E1525;--muted:#4B5568;--line:#DFE4EE;--chip:#E7EBF4;
+  --accent:#3B4FE4;--accent-text:#3B4FE4;--count-bg:#D5DBE8;
+  --inh-bg:#E6E9FF;--inh-fg:#2B3AB8;--inh-dot:#3B4FE4;
+  --free-bg:#DCFCE7;--free-fg:#166534;--free-dot:#16A34A;
+  --paid-bg:#FEF3C7;--paid-fg:#92400E;--paid-dot:#D97706;
+  --int-bg:#EEF1F6;--int-fg:#334155;
+  --ext-bg:#F3E8FF;--ext-fg:#6B21A8;
+  --shadow:0 14px 34px -14px rgba(20,30,70,.35);
+}
+:root[data-theme="dark"]{
+  --bg:#0B0F19;--surface:#131A29;--ink:#EEF1F7;--muted:#A4AEC3;--line:#26304A;--chip:#182033;
+  --accent-text:#9FAAFF;--count-bg:#26304A;
+  --inh-bg:#22305A;--inh-fg:#B9C3FF;--inh-dot:#7C8CFF;
+  --free-bg:#123A2C;--free-fg:#86EFAC;--free-dot:#22C55E;
+  --paid-bg:#41290F;--paid-fg:#FCD38D;--paid-dot:#F59E0B;
+  --int-bg:#1E293B;--int-fg:#CBD5E1;
+  --ext-bg:#2A1F3D;--ext-fg:#D8B4FE;
+  --shadow:0 14px 34px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh;transition:background-color .25s,color .25s}
+button{font:inherit;color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding-left:32px;padding-right:32px}
+@media (max-width:640px){.wrap{padding-left:16px;padding-right:16px}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px solid #5B6EFF;outline-offset:2px}
+
+/* Header */
+header{padding-top:22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:40px;height:40px;border-radius:11px;background:var(--accent);display:grid;place-items:center}
+.brand-name{font-family:Sora,sans-serif;font-weight:700;font-size:19px;letter-spacing:-.01em;display:block;line-height:1.15}
+.brand-sub{font-size:12.5px;color:var(--muted)}
+.head-right{display:flex;align-items:center;gap:10px}
+.net{font-size:13px;color:var(--muted);padding:8px 12px;border-radius:999px;border:1px solid var(--line);display:inline-flex;align-items:center;gap:8px}
+.net i{width:8px;height:8px;border-radius:50%;background:#16A34A;box-shadow:0 0 0 0 rgba(22,163,74,.6);animation:pulse 2.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(22,163,74,.55)}70%{box-shadow:0 0 0 8px rgba(22,163,74,0)}100%{box-shadow:0 0 0 0 rgba(22,163,74,0)}}
+.icon-btn{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer}
+.icon-btn:hover{border-color:var(--muted)}
+.sun{display:none}
+:root[data-theme="dark"] .sun{display:block}
+:root[data-theme="dark"] .moon{display:none}
+
+/* Hero */
+.hero{padding-top:56px;padding-bottom:28px}
+.eyebrow{margin:0 0 10px;font-size:14px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-text)}
+h1{margin:0;font-family:Sora,sans-serif;font-weight:700;font-size:clamp(34px,5vw,60px);line-height:1.04;letter-spacing:-.03em;max-width:880px}
+h1 span{color:var(--muted)}
+.search{margin-top:30px;max-width:760px;display:flex;align-items:center;gap:12px;padding:0 14px 0 20px;height:62px;border-radius:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
+.search:focus-within{box-shadow:0 0 0 3px rgba(91,110,255,.45)}
+.search input{flex:1;min-width:0;height:100%;border:0;background:transparent;color:var(--ink);font:inherit;font-size:17px}
+.search input:focus{outline:none}
+.search input::placeholder{color:var(--muted)}
+kbd{font-family:inherit;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:3px 7px}
+@media (max-width:640px){kbd{display:none}}
+.stats{margin-top:26px;display:flex;flex-wrap:wrap;gap:12px}
+.stat{display:flex;align-items:baseline;gap:8px;padding:10px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.stat b{font-family:Sora,sans-serif;font-size:22px}
+.stat span{font-size:13.5px;color:var(--muted)}
+
+/* Filters */
+nav.filters{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.filters .wrap{padding-top:14px;padding-bottom:14px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px}
+.tabs{display:flex;gap:4px;padding:4px;border-radius:14px;background:var(--chip);flex-wrap:wrap}
+.tab{min-height:44px;padding:0 18px;border:0;border-radius:10px;cursor:pointer;font-weight:600;font-size:14.5px;background:transparent;color:var(--muted);display:inline-flex;align-items:center;gap:8px;transition:background-color .15s,color .15s}
+.tab .n{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--count-bg);color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 2px 8px -2px rgba(20,30,70,.25)}
+.tab[aria-selected="true"] .n{background:var(--accent);color:#fff}
+.lics{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lics-label{font-size:13px;font-weight:600;color:var(--muted);margin-right:2px}
+.pill{min-height:44px;padding:0 14px;border-radius:999px;cursor:pointer;font-weight:500;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);display:inline-flex;align-items:center;gap:8px;transition:background-color .15s,color .15s}
+.pill i{width:8px;height:8px;border-radius:50%}
+.pill[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* Groups */
+main{padding-top:32px;padding-bottom:40px;display:flex;flex-direction:column;gap:44px}
+.g-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.g-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tag{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:6px}
+.tag.internal{background:var(--int-bg);color:var(--int-fg)}
+.tag.external{background:var(--ext-bg);color:var(--ext-fg)}
+h2{margin:0;font-family:Sora,sans-serif;font-size:24px;font-weight:600;letter-spacing:-.01em}
+.g-sub{margin:8px 0 0;font-size:14.5px;color:var(--muted)}
+.g-count{font-size:13.5px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.card{text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:16px;padding:20px;border-radius:18px;background:var(--surface);border:1px solid var(--line);min-height:168px;transition:transform .18s,box-shadow .18s,border-color .18s;animation:rise .35s ease both}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--muted)}
+.card:hover .arrow{transform:translate(3px,-3px)}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.card,.net i{animation:none}.card:hover{transform:none}}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.mono{width:50px;height:50px;border-radius:14px;color:#fff;display:grid;place-items:center;font-family:Sora,sans-serif;font-weight:700;font-size:17px;letter-spacing:-.02em}
+.arrow{transition:transform .18s;color:var(--muted)}
+.card-body{display:flex;flex-direction:column;gap:5px;flex:1}
+.card-name{font-family:Sora,sans-serif;font-weight:600;font-size:17px}
+.card-desc{font-size:14px;line-height:1.45;color:var(--muted)}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.badge{font-size:12px;font-weight:600;padding:4px 9px;border-radius:999px}
+.badge.internal{background:var(--int-bg);color:var(--int-fg)}
+.badge.external{background:var(--ext-bg);color:var(--ext-fg)}
+.badge.inhouse{background:var(--inh-bg);color:var(--inh-fg)}
+.badge.free{background:var(--free-bg);color:var(--free-fg)}
+.badge.paid{background:var(--paid-bg);color:var(--paid-fg)}
+.badge.team{font-weight:500;border:1px solid var(--line);color:var(--muted)}
+.pending{text-decoration:none;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:20px;border-radius:18px;border:2px dashed var(--line);min-height:168px;color:var(--muted)}
+.pending:hover{border-color:var(--muted)}
+.pending strong{font-family:Sora,sans-serif;font-weight:600;font-size:16px;color:var(--ink)}
+.pending span{font-size:13.5px;line-height:1.45}
+.empty{padding:56px 24px;text-align:center;border-radius:18px;border:1px solid var(--line);background:var(--surface)}
+.empty p{margin:0}
+.empty p:first-child{font-family:Sora,sans-serif;font-size:20px;font-weight:600}
+.empty p+p{margin-top:8px;color:var(--muted);font-size:14.5px}
+footer{border-top:1px solid var(--line)}
+footer .wrap{padding-top:22px;padding-bottom:30px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:13.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="brand">
+    <div class="logo" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg>
+    </div>
+    <div>
+      <span class="brand-name">Indxx Launchpad</span>
+      <span class="brand-sub">Every tool, one start page</span>
+    </div>
+  </div>
+  <div class="head-right">
+    <span class="net"><i></i>On Indxx network</span>
+    <button class="icon-btn" id="themeBtn" type="button" aria-label="Toggle light or dark mode">
+      <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="wrap hero">
+  <p class="eyebrow" id="dateLine"></p>
+  <h1><span id="greet" style="color:inherit">Hello</span>. <span>Where are you headed?</span></h1>
+  <label class="search" for="q">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--muted)"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <span class="sr">Search applications</span>
+    <input id="q" type="search" placeholder="Search apps, portals, vendors or teams…" autocomplete="off" autofocus>
+    <kbd>/</kbd>
+  </label>
+  <div class="stats" id="stats"></div>
+</section>
+
+<nav class="filters" aria-label="Filter applications">
+  <div class="wrap">
+    <div class="tabs" role="tablist" aria-label="Where the app lives" id="tabs"></div>
+    <div class="lics" id="lics"><span class="lics-label">Licence</span></div>
+  </div>
+</nav>
+
+<main class="wrap" id="groups" aria-live="polite"></main>
+
+<footer>
+  <div class="wrap">
+    <span>Missing an app or a broken link? Write to [IT HELPDESK EMAIL]</span>
+    <span>Indxx · Internal use only</span>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   APP DIRECTORY — edit this list to add / change apps.
+   acc:  "internal" | "external"
+   lic:  "inhouse" | "free" | "paid"
+   kind: "app" (internal) | "vendor" | "tool"   (external groups)
+   url:  replace "#" with the real link
+   ========================================================= */
+const APPS = [
+  { name: "Indxx Website",   desc: "Public corporate website and index information.", team: "Marketing",       acc: "internal", lic: "inhouse", kind: "app", url: "https://www.indxx.com" },
+  { name: "Indxx Pulse",     desc: "[One-line purpose of Indxx Pulse]",               team: "[Team]",          acc: "internal", lic: "inhouse", kind: "app", url: "#" },
+  { name: "ICAL",            desc: "[One-line purpose of ICAL]",                      team: "[Team]",          acc: "internal", lic: "inhouse", kind: "app", url: "#" },
+  { name: "Client Delivery", desc: "Delivery of index files and data to clients.",    team: "Client Services", acc: "internal", lic: "inhouse", kind: "app", url: "#" },
+  { name: "CAdmin",          desc: "[One-line purpose of CAdmin]",                    team: "[Team]",          acc: "internal", lic: "inhouse", kind: "app", url: "#" },
+  { name: "ITICS Admin",     desc: "Administration console for ITICS.",               team: "[Team]",          acc: "internal", lic: "inhouse", kind: "app", url: "#" },
+  { name: "ITICS Website",   desc: "ITICS website.",                                  team: "[Team]",          acc: "internal", lic: "inhouse", kind: "app", url: "#" },
+  { name: "ITICS Screener",  desc: "Screen companies using ITICS data.",              team: "Research",        acc: "internal", lic: "inhouse", kind: "app", url: "#" },
+  { name: "Backtest Engine", desc: "Run and review index backtests.",                 team: "Research",        acc: "internal", lic: "inhouse", kind: "app", url: "#" },
+
+  /* ---- External · Free / open source ---- */
+  { name: "Aberdeen",        desc: "Asset manager — fund and partner information.",   team: "Research",   acc: "external", lic: "free", kind: "vendor", url: "https://www.aberdeeninvestments.com" },
+  { name: "CBOE",            desc: "Exchange data and index information.",            team: "Research",   acc: "external", lic: "free", kind: "vendor", url: "https://www.cboe.com" },
+  { name: "Sentry.io",       desc: "Centralized error logging and monitoring.",       team: "Technology", acc: "external", lic: "free", kind: "tool",   url: "https://sentry.io" },
+  { name: "ChatGPT",         desc: "AI assistant for writing and research.",          team: "All teams",  acc: "external", lic: "free", kind: "tool",   url: "https://chatgpt.com" },
+  { name: "CITI",            desc: "Bank partner portal.",                            team: "Client Services", acc: "external", lic: "free", kind: "vendor", url: "#" },
+  { name: "Coin Market API", desc: "Crypto market data API.",                         team: "Research",   acc: "external", lic: "free", kind: "vendor", url: "https://coinmarketcap.com/api/" },
+  { name: "CPI Iceland",     desc: "Icelandic consumer price index data.",            team: "Research",   acc: "external", lic: "free", kind: "vendor", url: "https://www.statice.is" },
+  { name: "Edgar",           desc: "SEC company filings database.",                   team: "Research",   acc: "external", lic: "free", kind: "vendor", url: "https://www.sec.gov/edgar/search/" },
+  { name: "ETF.com",         desc: "ETF news, data and screeners.",                   team: "Research",   acc: "external", lic: "free", kind: "vendor", url: "https://www.etf.com" },
+  { name: "FileZilla",       desc: "FTP / SFTP file transfer client.",                team: "Operations", acc: "external", lic: "free", kind: "tool",   url: "https://filezilla-project.org" },
+  { name: "Gemini",          desc: "Google's AI assistant.",                          team: "All teams",  acc: "external", lic: "free", kind: "tool",   url: "https://gemini.google.com" },
+  { name: "Hire Acquire",    desc: "Hiring and recruitment platform.",                team: "HR",         acc: "external", lic: "free", kind: "tool",   url: "#" },
+  { name: "Morgan Stanley",  desc: "Bank partner portal.",                            team: "Client Services", acc: "external", lic: "free", kind: "vendor", url: "#" },
+  { name: "NASDAQ",          desc: "Exchange data and index information.",            team: "Research",   acc: "external", lic: "free", kind: "vendor", url: "https://www.nasdaq.com" },
+  { name: "SALT Financial",  desc: "Partner index and ETF information.",              team: "Client Services", acc: "external", lic: "free", kind: "vendor", url: "#" },
+  { name: "SQL",             desc: "Database query client.",                          team: "Technology", acc: "external", lic: "free", kind: "tool",   url: "#" },
+
+  /* ---- External · Paid / licensed ---- */
+  { name: "Akir Advisory India LLP", desc: "External advisory services.",             team: "Finance",    acc: "external", lic: "paid", kind: "service", url: "#" },
+  { name: "IT Business Solution",    desc: "External IT services.",                   team: "Technology", acc: "external", lic: "paid", kind: "service", url: "#" },
+  { name: "Asian Global Solution",   desc: "External service provider.",              team: "[Team]",     acc: "external", lic: "paid", kind: "service", url: "#" },
+  { name: "Auxiliary DigiTech",      desc: "External digital services.",              team: "[Team]",     acc: "external", lic: "paid", kind: "service", url: "#" },
+  { name: "AWS Servers",             desc: "Cloud hosting — new and old servers.",    team: "Technology", acc: "external", lic: "paid", kind: "tool",    url: "https://console.aws.amazon.com" },
+  { name: "Bloomberg",               desc: "Terminal, market and reference data.",    team: "Research",   acc: "external", lic: "paid", kind: "vendor",  url: "https://www.bloomberg.com/professional/" },
+  { name: "Brand Visage",            desc: "Branding and marketing services.",        team: "Marketing",  acc: "external", lic: "paid", kind: "service", url: "#" },
+  { name: "Care Health Insurance",   desc: "Employee health insurance.",              team: "HR",         acc: "external", lic: "paid", kind: "service", url: "https://www.careinsurance.com" },
+  { name: "SonarQube",               desc: "Code review and quality checks.",         team: "Technology", acc: "external", lic: "paid", kind: "tool",    url: "#" },
+  { name: "Claude AI",               desc: "AI coding assistant.",                    team: "Technology", acc: "external", lic: "paid", kind: "tool",    url: "https://claude.ai" },
+  { name: "Comprinno",               desc: "Cloud managed services (MSA).",           team: "Technology", acc: "external", lic: "paid", kind: "service", url: "#" },
+  { name: "Delta Neutral",           desc: "External service provider.",              team: "[Team]",     acc: "external", lic: "paid", kind: "service", url: "#" },
+  { name: "EDI",                     desc: "Corporate actions and reference data.",   team: "Operations", acc: "external", lic: "paid", kind: "vendor",  url: "https://www.exchange-data.com" },
+  { name: "EIN Presswire",           desc: "Press release distribution.",             team: "Marketing",  acc: "external", lic: "paid", kind: "tool",    url: "https://www.einpresswire.com" },
+  { name: "ETF Action",              desc: "ETF data and analytics.",                 team: "Research",   acc: "external", lic: "paid", kind: "vendor",  url: "https://www.etfaction.com" },
+  { name: "FactSet",                 desc: "Financial data and analytics.",           team: "Research",   acc: "external", lic: "paid", kind: "vendor",  url: "https://www.factset.com" },
+  { name: "Figma Premium",           desc: "Design and prototyping.",                 team: "Design",     acc: "external", lic: "paid", kind: "tool",    url: "https://www.figma.com" },
+  { name: "GitHub Teams",            desc: "Code hosting and collaboration.",         team: "Technology", acc: "external", lic: "paid", kind: "tool",    url: "https://github.com" },
+  { name: "Grassi",                  desc: "Accounting and advisory services.",       team: "Finance",    acc: "external", lic: "paid", kind: "service", url: "#" },
+  { name: "HubSpot",                 desc: "CRM and marketing automation.",           team: "Sales",      acc: "external", lic: "paid", kind: "tool",    url: "https://app.hubspot.com" },
+  { name: "InVideo",                 desc: "Video creation.",                         team: "Marketing",  acc: "external", lic: "paid", kind: "tool",    url: "https://invideo.io" },
+  { name: "JSBR",                    desc: "External service provider.",              team: "[Team]",     acc: "external", lic: "paid", kind: "service", url: "#" },
+  { name: "Kaiko",                   desc: "Crypto market data.",                     team: "Research",   acc: "external", lic: "paid", kind: "vendor",  url: "https://www.kaiko.com" },
+  { name: "Keka",                    desc: "HR, attendance and payroll.",             team: "HR",         acc: "external", lic: "paid", kind: "tool",    url: "https://www.keka.com" },
+  { name: "Minerva",                 desc: "External service provider.",              team: "[Team]",     acc: "external", lic: "paid", kind: "service", url: "#" },
+  { name: "MongoDB",                 desc: "Database hosting.",                       team: "Technology", acc: "external", lic: "paid", kind: "tool",    url: "https://cloud.mongodb.com" },
+  { name: "Morningstar",             desc: "Fund and ETF data and research.",         team: "Research",   acc: "external", lic: "paid", kind: "vendor",  url: "https://www.morningstar.com" }
+];
+
+const INVENTORY_URL = "https://kavita-kumari-indxx.github.io/Indxx_Data_Repository/";
+
+const GROUPS = [
+  { kind: "app",    acc: "internal", title: "Indxx applications", sub: "Built and run by Indxx — reachable on the office network or VPN." },
+  { kind: "vendor", acc: "external", title: "Data vendors",       sub: "Market, reference and corporate-action data providers.", pending: "Data vendor links" },
+  { kind: "tool",   acc: "external", title: "Tools & platforms",  sub: "Third-party software, SaaS portals and websites teams rely on.", pending: "Tool & platform links" },
+  { kind: "service", acc: "external", title: "Service providers", sub: "Consultants, agencies, insurers and outsourced services.", pending: "Service provider links" }
+];
+
+const LIC_LABEL = { inhouse: "In-house", free: "Free / open source", paid: "Paid / licensed" };
+const ACC_LABEL = { internal: "Internal", external: "External" };
+const HUES = ["#3B4FE4","#0F766E","#B45309","#6D28D9","#BE185D","#0369A1","#4D7C0F","#9F1239","#1E40AF","#0E7490","#7C2D12","#4338CA"];
+
+const state = { tab: "all", lic: "all", q: "" };
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+
+/* ---------- Theme ---------- */
+const root = document.documentElement;
+function getStoredTheme(){ try { return localStorage.getItem("lp-theme"); } catch(e){ return null; } }
+function setTheme(t){
+  root.setAttribute("data-theme", t);
+  $("themeBtn").setAttribute("aria-label", t === "dark" ? "Switch to light mode" : "Switch to dark mode");
+  try { localStorage.setItem("lp-theme", t); } catch(e){}
+}
+setTheme(getStoredTheme() || (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+$("themeBtn").addEventListener("click", () => setTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark"));
+
+/* ---------- Greeting ---------- */
+const now = new Date(), h = now.getHours();
+$("greet").textContent = h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
+$("dateLine").textContent = now.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
+
+/* ---------- Stats ---------- */
+const count = (f) => APPS.filter(f).length;
+$("stats").innerHTML = [
+  [count(a => a.acc === "internal"), "internal apps"],
+  [count(a => a.acc === "external"), "external apps & services"],
+  [count(a => a.lic === "paid"), "paid / licensed"],
+  [count(a => a.lic === "free"), "free / open source"]
+].map(([v, l]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("");
+
+/* ---------- Tabs & licence pills ---------- */
+const TABS = [
+  { id: "all", label: "All apps", n: APPS.length },
+  { id: "internal", label: "Internal", n: count(a => a.acc === "internal") },
+  { id: "external", label: "External", n: count(a => a.acc === "external") }
+];
+$("tabs").innerHTML = TABS.map(t =>
+  `<button class="tab" role="tab" type="button" data-tab="${t.id}" aria-selected="${t.id === state.tab}">${t.label}<span class="n">${t.n}</span></button>`
+).join("");
+const LICS = [
+  { id: "all", label: "All", dot: "var(--muted)" },
+  { id: "inhouse", label: LIC_LABEL.inhouse, dot: "var(--inh-dot)" },
+  { id: "free", label: LIC_LABEL.free, dot: "var(--free-dot)" },
+  { id: "paid", label: LIC_LABEL.paid, dot: "var(--paid-dot)" }
+];
+$("lics").insertAdjacentHTML("beforeend", LICS.map(l =>
+  `<button class="pill" type="button" data-lic="${l.id}" aria-pressed="${l.id === state.lic}"><i style="background:${l.dot}"></i>${l.label}</button>`
+).join(""));
+
+$("tabs").addEventListener("click", e => {
+  const b = e.target.closest("[data-tab]"); if (!b) return;
+  state.tab = b.dataset.tab;
+  document.querySelectorAll("[data-tab]").forEach(x => x.setAttribute("aria-selected", x === b));
+  render();
+});
+$("lics").addEventListener("click", e => {
+  const b = e.target.closest("[data-lic]"); if (!b) return;
+  state.lic = b.dataset.lic;
+  document.querySelectorAll("[data-lic]").forEach(x => x.setAttribute("aria-pressed", x === b));
+  render();
+});
+$("q").addEventListener("input", e => { state.q = e.target.value; render(); });
+document.addEventListener("keydown", e => {
+  if (e.key === "/" && document.activeElement !== $("q")) { e.preventDefault(); $("q").focus(); }
+  if (e.key === "Escape" && document.activeElement === $("q")) { $("q").value = ""; state.q = ""; render(); }
+});
+
+/* ---------- Render ---------- */
+function mono(name){
+  const w = name.split(/\s+/);
+  return (w.length > 1 ? w[0][0] + w[1][0] : name.slice(0, 2)).toUpperCase();
+}
+function card(a, i){
+  const url = a.url || "#";
+  const target = url === "#" ? "" : ` target="_blank" rel="noopener"`;
+  return `<a class="card" href="${esc(url)}"${target} style="animation-delay:${i * 30}ms">
+    <div class="card-top">
+      <div class="mono" style="background:${a.hue}" aria-hidden="true">${esc(mono(a.name))}</div>
+      <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+    </div>
+    <div class="card-body">
+      <span class="card-name">${esc(a.name)}</span>
+      <span class="card-desc">${esc(a.desc)}</span>
+    </div>
+    <div class="badges">
+      <span class="badge ${a.acc}">${ACC_LABEL[a.acc]}</span>
+      <span class="badge ${a.lic}">${LIC_LABEL[a.lic]}</span>
+      <span class="badge team">${esc(a.team)}</span>
+    </div>
+  </a>`;
+}
+APPS.forEach((a, i) => { a.hue = a.hue || HUES[i % HUES.length]; });
+
+function render(){
+  const q = state.q.trim().toLowerCase();
+  let shown = 0, pendingShown = 0;
+  const html = GROUPS
+    .filter(g => state.tab === "all" || g.acc === state.tab)
+    .map(g => {
+      const all = APPS.filter(a => a.kind === g.kind).sort((x, y) => x.name.localeCompare(y.name));
+      const items = all.filter(a =>
+        (state.lic === "all" || a.lic === state.lic) &&
+        (!q || (a.name + " " + a.desc + " " + a.team).toLowerCase().includes(q)));
+      const pending = g.acc === "external" && all.length === 0 && !q && state.lic !== "inhouse";
+      if (!items.length && !pending) return "";
+      shown += items.length; if (pending) pendingShown++;
+      const countLabel = pending ? "Awaiting list" : `${items.length} ${items.length === 1 ? "app" : "apps"}`;
+      return `<section aria-label="${esc(g.title)}">
+        <div class="g-head">
+          <div>
+            <div class="g-title"><span class="tag ${g.acc}">${ACC_LABEL[g.acc]}</span><h2>${esc(g.title)}</h2></div>
+            <p class="g-sub">${esc(g.sub)}</p>
+          </div>
+          <span class="g-count">${countLabel}</span>
+        </div>
+        <div class="grid">
+          ${items.map(card).join("")}
+          ${pending ? `<a class="pending" href="${INVENTORY_URL}" target="_blank" rel="noopener">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <strong>${esc(g.pending)}</strong>
+            <span>To be filled from the Data Vendor &amp; Tools inventory</span></a>` : ""}
+        </div>
+      </section>`;
+    }).join("");
+  $("groups").innerHTML = (shown || pendingShown) ? html :
+    `<div class="empty"><p>Nothing matches${q ? ` “${esc(state.q.trim())}”` : " this filter"}</p><p>Try another name, a team such as Research, or a different licence filter.</p></div>`;
+}
+render();
+</script>
+</body>
+</html>
